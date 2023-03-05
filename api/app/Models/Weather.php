@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+class Weather extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
+
+    protected $table = 'weather_data';
 
     /**
      * The attributes that are mass assignable.
@@ -16,9 +17,14 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'email',
-        'password',
+        'user_id',
+        'data',
+        'hourly',
+        'current',
+        'daily',
+        'latitude',
+        'longitude',
+        'timezone',
     ];
 
     /**
@@ -28,8 +34,7 @@ class User extends Authenticatable
      */
     protected $hidden = [
         'id',
-        'password',
-        'remember_token',
+        'user_id',
     ];
 
     /**
@@ -38,14 +43,16 @@ class User extends Authenticatable
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
+        'hourly' => 'array',
+        'current' => 'array',
+        'daily' => 'array',
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function weather()
+    public function user()
     {
-        return $this->hasOne(Weather::class, 'user_id', 'id');
+        return $this->belongsTo(User::class, 'user_id', 'id');
     }
 }

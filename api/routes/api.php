@@ -15,8 +15,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return response()->json([
-        'message' => 'all systems are a go',
-        'users' => \App\Models\User::all(),
-    ]);
+    return view('welcome');
 });
+
+Route::get('/users', [\App\Http\Controllers\UsersController::class, 'index']);
+Route::get('/users/{email}/weather', [\App\Http\Controllers\WeatherController::class, 'getWeather']);
+
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
+
+
